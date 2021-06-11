@@ -1,11 +1,15 @@
 import streamlit as st
 from tradier_data import * 
 from utils import * 
+from scraping import * 
 
 option = st.sidebar.selectbox("Select Option",('home','wsb','optiondata'))
 
 if option == 'home':
 	st.header("select something in the nav bar")
+	st.subheader("Highest shorted stocks right now") 
+	short_df = get_most_shorted_stocks()
+	st.dataframe(short_df)
 elif option == 'optiondata':
 	st.header("Wait for the option data to render, it takes a while...")
 	symbol = st.sidebar.text_input("Ticker",value="AAPL",max_chars=5)
