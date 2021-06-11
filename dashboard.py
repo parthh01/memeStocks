@@ -7,7 +7,7 @@ option = st.sidebar.selectbox("Select Option",('home','wsb','optiondata'))
 if option == 'home':
 	st.header("select something in the nav bar")
 elif option == 'optiondata':
-	st.header("Wait for the running man, it takes a while...")
+	st.header("Wait for the option data to render, it takes a while...")
 	symbol = st.sidebar.text_input("Ticker",value="AAPL",max_chars=5)
 	st.subheader("Underlying security information")
 	stock_quote = get_quote_for_security(symbol)
