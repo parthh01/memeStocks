@@ -1,6 +1,6 @@
 import streamlit as st
 from tradier_data import * 
-
+from utils import * 
 
 option = st.sidebar.selectbox("Select Option",('home','wsb','optiondata'))
 
@@ -16,6 +16,8 @@ elif option == 'optiondata':
 	chain_df = get_quotes_for_options(stock_options,df=True)
 	st.subheader("option data for {}: ".format(symbol))
 	st.dataframe(chain_df)
+	dl_link = get_table_download_link(chain_df)
+	st.markdown(dl_link,unsafe_allow_html=True)
 elif option == 'wsb':
 	st.header("wsb data here") 
  
