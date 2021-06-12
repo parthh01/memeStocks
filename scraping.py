@@ -51,7 +51,7 @@ def get_most_shorted_stocks(df=True):
     for row in rows: data.append([val.text.strip('\n') for val in row.findAll('td')])
     if df: 
         data =  pd.DataFrame(data,columns=si_cols).rename(columns={si_cols[0]:"Symbol"})
-        data["Symbol"] = data["Symbol"].str.split(n=1)
+        data["Symbol"] = data["Symbol"].str.split(n=1).map(lambda x:x[0])
     return data
 
 
