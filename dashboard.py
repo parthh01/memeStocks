@@ -16,6 +16,9 @@ elif option == 'optiondata':
 	st.subheader("Underlying security information")
 	stock_quote = get_quote_for_security(symbol)
 	stock_quote
+	si_data = get_short_interest_for_security(symbol)
+	st.subheader("short interest data for {}".format(symbol))
+	st.dataframe(si_data)
 	stock_options = get_options_for_security(symbol)
 	chain_df = get_quotes_for_options(stock_options,df=True)
 	st.subheader("option data for {}: ".format(symbol))
