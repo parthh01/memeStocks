@@ -2,14 +2,19 @@ import streamlit as st
 from tradier_data import * 
 from utils import * 
 from scraping import * 
+from alpaca import *
 
 option = st.sidebar.selectbox("Select Option",('home','wsb','optiondata'))
 
 if option == 'home':
 	st.header("select something in the nav bar")
-	st.subheader("Highest shorted stocks right now") 
+	st.subheader("stocks with high short interest, low runup") 
+	st.write("Runup is the maximum % difference between the 50MA and the price at any point in the last year, in my opinion a pretty good proxy for whether or not the stock has run-up already. Empirically tested a good cutoff to be 40%. Anything above 40% is pretty much a certainty the stock has already run up. The lower the runup % the more likely a runup has yet to occur, assuming all other signals check out.")
 	short_df = get_most_shorted_stocks()
-	st.dataframe(short_df)
+	runup_df = get_runup_data_for_stocks(short_df["Symbol"].tolist())
+	short_df = short_df.merge(runup_df,on="Symbol")
+	st.dataframe(short_df[short_df["Runup (%)"] < 40])
+	st.markdown(get_table_download_link(short_df),unsafe_allow_html=True)
 elif option == 'optiondata':
 	st.header("Wait for the option data to render, it takes a while...")
 	symbol = st.sidebar.text_input("Ticker",value="AAPL",max_chars=5)
@@ -19,9 +24,8 @@ elif option == 'optiondata':
 	si_data = get_short_interest_for_security(symbol)
 	st.subheader("short interest data for {}".format(symbol))
 	st.dataframe(si_data)
-	stock_options = get_options_for_security(symbol)
-	chain_df = get_quotes_for_options(stock_options,df=True)
 	st.subheader("option data for {}: ".format(symbol))
+	chain_df = assemble_options_data_for_security(symbol)
 	st.dataframe(chain_df)
 	dl_link = get_table_download_link(chain_df)
 	st.markdown(dl_link,unsafe_allow_html=True)
