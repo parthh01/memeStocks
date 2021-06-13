@@ -4,5 +4,5 @@ pandas
 requests
 beautifulsoup4
 py_vollib_vectorized
-polygon-api-client
+alpaca-trade-api
 
