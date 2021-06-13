@@ -5,4 +5,4 @@ requests
 beautifulsoup4
 py_vollib_vectorized
 alpaca-trade-api
-
+praw
