@@ -2,7 +2,7 @@ from alpaca_trade_api.rest import REST, TimeFrame
 from datetime import datetime, timedelta
 import pandas as pd
 
-def get_historical_data_for_security(ticker,start=str((datetime.today() - timedelta(days=365)).date()),end=str(datetime.today().date() - timedelta(days=1)),df=True):
+def get_historical_data_for_security(ticker,start=str((datetime.today() - timedelta(days=365)).date()),end=str(datetime.today().date() - timedelta(days=2)),df=True):
     api = REST()
     
     data = api.get_bars(ticker, TimeFrame.Day, start, end)
