@@ -6,7 +6,7 @@ from alpaca import *
 
 option = st.sidebar.selectbox("Select Option",('home','wsb','optiondata'))
 symbol = st.sidebar.text_input("Ticker",value="AAPL",max_chars=5)
-
+wsb_df = get_wsb_analysis()
 if option == 'home':
 	st.header("select something in the nav bar")
 	st.subheader("stocks with high short interest, low runup") 
@@ -15,10 +15,8 @@ if option == 'home':
 	short_df = get_most_shorted_stocks()
 	runup_df = get_runup_data_for_stocks(short_df["Symbol"].tolist())
 	short_df = short_df.merge(runup_df,on="Symbol")
-	wsb_df = get_wsb_analysis()
-	print(wsb_df)
 	short_df = short_df.merge(wsb_df,how='left',on='Symbol')
-	st.dataframe(short_df[short_df["Runup (%)"] < 40])
+	st.dataframe(short_df[(short_df["Runup (%)"] < 40) & (short_df["Relative Frequency (%)"].notna())])
 	st.markdown(get_table_download_link(short_df),unsafe_allow_html=True)
 elif option == 'optiondata':
 	st.header("Wait for the option data to render, it takes a while...")
@@ -35,6 +33,6 @@ elif option == 'optiondata':
 	st.markdown(dl_link,unsafe_allow_html=True)
 elif option == 'wsb':
 	st.header("wsb data here") 
- 
+	st.dataframe(wsb_df)
 
 
